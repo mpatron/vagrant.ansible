@@ -1,0 +1,9 @@
+# ansible-playbook ./setup.yml  -v -vvvv -u ubuntu -i ./host.yml 
+- name: Hello Ansible - quick start
+  hosts: [clients]
+  user: vagrant
+  sudo: yes
+
+  tasks:
+    - name: Hello server
+      shell: date >> now.txt

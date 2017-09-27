@@ -1,0 +1,1 @@
+https://github.com/tumf/vagrant-ansible_local-centos7-sample
