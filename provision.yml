@@ -1,9 +1,15 @@
 # ansible-playbook ./setup.yml  -v -vvvv -u ubuntu -i ./host.yml 
-- name: Hello Ansible - quick start
-  hosts: [clients]
+---
+- name: Hello World!
+  hosts: [nodes]
+  become: yes
   user: vagrant
-  sudo: yes
 
   tasks:
-    - name: Hello server
-      shell: date >> now.txt
+ 
+  - fail: msg="===>> Only on CentOS 7, derivatives, and later ! <<==="
+    when: ansible_distribution != "CentOS" or ansible_distribution_major_version != "7"
+  - name: Hello World!
+    shell: echo "Hi! Tower is working."
+  - name: Yum update standard repo
+    yum: name=* state=latest update_cache=yes
