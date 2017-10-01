@@ -13,3 +13,5 @@
     shell: echo "Hi! Tower is working."
   - name: Yum update standard repo
     yum: name=* state=latest update_cache=yes
+  - name: write our hosts
+    template: src=/vagrant/hosts.j2 dest=/etc/hosts.txt mode=644 owner=root group=root

@@ -18,7 +18,7 @@ Vagrant.configure("2") do |config|
       sudo sed -i -e "\\#PasswordAuthentication no# s#PasswordAuthentication no#PasswordAuthentication yes#g" /etc/ssh/sshd_config
       sudo systemctl restart sshd
     SHELL1
-end
+  end
 
   config.vm.define "node2" do |machine|
     machine.vm.hostname = "node2.jobjects.org"
@@ -27,7 +27,7 @@ end
       sudo sed -i -e "\\#PasswordAuthentication no# s#PasswordAuthentication no#PasswordAuthentication yes#g" /etc/ssh/sshd_config
       sudo systemctl restart sshd
     SHELL2
-end
+  end
 
   config.vm.define 'controller' do |machine|
     machine.vm.hostname = "controller.jobjects.org"
@@ -42,7 +42,7 @@ end
       ansible.verbose        = true
       ansible.install        = true
       ansible.limit          = "all" # or only "nodes" group, etc.
-      ansible.inventory_path = "hosts"
+      ansible.inventory_path = "inventory.txt"
     end
   end
   
