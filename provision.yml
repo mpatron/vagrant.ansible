@@ -15,3 +15,29 @@
     yum: name=* state=latest update_cache=yes
   - name: write our hosts
     template: src=/vagrant/hosts.j2 dest=/etc/hosts mode=644 owner=root group=root
+  - name: Install packages
+    yum: name={{ item }} state=present
+    with_items:
+      - rng-tools
+      - ipa-server
+      - ipa-server-dns
+      - bind
+      - bind-dyndb-ldap
+      - vim
+      - lsof
+      - lynx
+      - nmap
+      - firewalld
+      - bind-utils
+      - dos2unix
+  - name: Mise en forme unix des script
+    script: dos2unix /vagrant/install-*
+  - name: Ensure NetworkManager does not change /etc/resolf.conf
+    ini_file:
+      path: /etc/NetworkManager/NetworkManager.conf
+      section: main
+      option: dns
+      value: none
+      backup: yes
+  - name: stop chronyd
+    service: name=chronyd state=stop enabled=false      

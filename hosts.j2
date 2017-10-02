@@ -2,5 +2,5 @@
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 
 {% for item in groups['nodes'] %}
-{{ hostvars[item].ansible_host }}       {{ item }}      {{ item }}.{{ hostvars[item].ansible_domain }}
+{{ hostvars[item].ansible_host }}       {{ item }}.{{ hostvars[item].ansible_domain }}      {{ item }}
 {% endfor %}

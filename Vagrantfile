@@ -36,22 +36,15 @@ Vagrant.configure("2") do |config|
     vb.customize ['modifyvm', :id, '--cableconnected1', 'on']
   end
 
-  config.vm.define "node1" do |machine|
-    machine.vm.hostname = "node1.jobjects.org"
-    machine.vm.network "private_network", ip: "192.168.56.141"
-    machine.vm.provision "shell", inline: <<-SHELL1
-      sudo sed -i -e "\\#PasswordAuthentication no# s#PasswordAuthentication no#PasswordAuthentication yes#g" /etc/ssh/sshd_config
-      sudo systemctl restart sshd
-    SHELL1
-  end
-
-  config.vm.define "node2" do |machine|
-    machine.vm.hostname = "node2.jobjects.org"
-    machine.vm.network "private_network", ip: "192.168.56.142"
-    machine.vm.provision "shell", inline: <<-SHELL2
-      sudo sed -i -e "\\#PasswordAuthentication no# s#PasswordAuthentication no#PasswordAuthentication yes#g" /etc/ssh/sshd_config
-      sudo systemctl restart sshd
-    SHELL2
+  (1..3).each do |i|
+    config.vm.define "node#{i}" do |node|
+      node.vm.hostname = "node#{i}.jobjects.org"
+      node.vm.network "private_network", ip: "192.168.56.14#{i}"
+      node.vm.provision "shell", inline: <<-SHELL1
+        sudo sed -i -e "\\#PasswordAuthentication no# s#PasswordAuthentication no#PasswordAuthentication yes#g" /etc/ssh/sshd_config
+        sudo systemctl restart sshd
+      SHELL1
+    end
   end
 
   config.vm.define 'controller' do |machine|
