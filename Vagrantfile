@@ -57,7 +57,7 @@ Vagrant.configure("2") do |config|
 
     machine.vm.provision :ansible_local do |ansible|
       ansible.playbook       = "provision.yml"
-      ansible.verbose        = true
+      ansible.verbose        = false
       ansible.install        = true
       ansible.limit          = "all" # or only "nodes" group, etc.
       ansible.inventory_path = "inventory.txt"

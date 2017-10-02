@@ -31,7 +31,7 @@
       - bind-utils
       - dos2unix
   - name: Mise en forme unix des script
-    script: dos2unix /vagrant/install-*
+    shell: dos2unix /vagrant/install-*
   - name: Ensure NetworkManager does not change /etc/resolf.conf
     ini_file:
       path: /etc/NetworkManager/NetworkManager.conf
@@ -40,4 +40,4 @@
       value: none
       backup: yes
   - name: stop chronyd
-    service: name=chronyd state=stop enabled=false      
+    service: name=chronyd state=stopped enabled=false      
