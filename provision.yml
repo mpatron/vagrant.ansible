@@ -31,6 +31,17 @@
       - bind-utils
       - dos2unix
   - name: Mise en forme unix des script
+    lineinfile:
+      path: /usr/lib/systemd/system/rngd.service
+      regexp: '^ExecStart=/sbin/rngd -f'
+      line: 'ExecStart=/sbin/rngd -f -r /dev/urandom -o /dev/random'
+  - name: Démarrage du service rngd sur la vm pour rendre actif le générateur aléatoire.
+    systemd:
+      state: started
+      daemon_reload: yes
+      enabled: yes
+      name: rngd      
+  - name: Mise en forme unix des script
     shell: dos2unix /vagrant/install-*
   - name: Ensure NetworkManager does not change /etc/resolf.conf
     ini_file:
