@@ -29,6 +29,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.box = "centos/7"
+  config.vm.box_version = "1611.01"
   config.vm.boot_timeout = 60
   config.vm.provider "virtualbox" do |vb|
     vb.cpus = 2    
