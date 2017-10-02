@@ -62,6 +62,13 @@ Vagrant.configure("2") do |config|
       ansible.limit          = "all" # or only "nodes" group, etc.
       ansible.inventory_path = "inventory.txt"
     end
+
+    machine.vm.provision "shell", inline: <<-SHELL4
+      sshpass -p "vagrant" ssh -o StrictHostKeyChecking=no vagrant@192.168.56.141 'sudo -H -u root bash -c /vagrant/install-freeipa.sh'
+      sshpass -p "vagrant" ssh -o StrictHostKeyChecking=no vagrant@192.168.56.142 'sudo -H -u root bash -c /vagrant/install-replica.sh'
+      sshpass -p "vagrant" ssh -o StrictHostKeyChecking=no vagrant@192.168.56.143 'sudo -H -u root bash -c /vagrant/install-client.sh'
+    SHELL4
+    
   end
   
  end

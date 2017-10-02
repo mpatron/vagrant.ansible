@@ -30,6 +30,7 @@
       - firewalld
       - bind-utils
       - dos2unix
+      - sshpass
   - name: Mise en forme unix des script
     lineinfile:
       path: /usr/lib/systemd/system/rngd.service
