@@ -1,22 +1,30 @@
 # ansible-playbook ./setup.yml  -v -vvvv -u ubuntu -i ./host.yml 
 ---
-- name: Hello World!
+- name: Playbook de test de monté de version de FreeIPA
   hosts: [nodes]
   become: yes
   user: vagrant
 
+  environment:
+
+    IPA_SERVER_PASSWORD: Welcome1
+    IPA_SERVER_NAME: node1
+    IPA_SERVER_DOMAIN: jobjects.org
+    IPA_SERVER_IP: 192.168.56.141
+    # IPA_SERVER_NTP: ntp1.net-courrier.extra.laposte.fr
+    IPA_SERVER_NTP: 0.fr.pool.ntp.org
+
   tasks:
  
-  - fail: msg="===>> Only on CentOS 7, derivatives, and later ! <<==="
-    when: ansible_distribution != "CentOS" or ansible_distribution_major_version != "7"
-  - name: Hello World!
-    shell: echo "Hi! Tower is working."
-  - name: Yum update standard repo
-    yum: name=* state=latest update_cache=yes
-  - name: write our hosts
+  - name: Doit être CentOS7
+    fail: msg="===>> Only on CentOS 7, derivatives, and later ! <<==="
+    when: (ansible_distribution != "CentOS" and ansible_distribution != 'Red Hat Enterprise Linux') or (ansible_distribution_major_version != "7")
+#  - name: Yum update standard repo
+#    yum: name=* state=latest update_cache=yes
+  - name: Ecriture du fichier /etc/hosts
     template: src=/vagrant/hosts.j2 dest=/etc/hosts mode=644 owner=root group=root
-  - name: Install packages
-    yum: name={{ item }} state=present
+  - name: Installation des packages
+    yum: name={{ item }} state=present update_cache=yes
     with_items:
       - rng-tools
       - ipa-server
@@ -51,5 +59,12 @@
       option: dns
       value: none
       backup: yes
-  - name: stop chronyd
+  - name: Extinction et déactivation de chronyd pour laisser la place à ntpd
     service: name=chronyd state=stopped enabled=false      
+  - name: Mise à jour du l'heure
+    # shell: ntpdate -su $IPA_SERVER_NTP
+    shell: echo $IPA_SERVER_NTP
+    register: result
+  - name: Affichage de l'heure
+    debug:
+      msg: "Heure: {{ result }}"
