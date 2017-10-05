@@ -1,4 +1,5 @@
 # ansible-playbook ./setup.yml  -v -vvvv -u ubuntu -i ./host.yml 
+# cd /vagrant && ansible-playbook /vagrant/provision.yml  -vvv -i /vagrant/inventory.txt  -l nodes
 ---
 - name: Playbook de test de monté de version de FreeIPA
   hosts: [nodes]
@@ -23,6 +24,8 @@
 #    yum: name=* state=latest update_cache=yes
   - name: Ecriture du fichier /etc/hosts
     template: src=/vagrant/hosts.j2 dest=/etc/hosts mode=644 owner=root group=root
+  - name: Ecriture du fichier /etc/resolv.conf
+    template: src=/vagrant/resolv.conf.j2 dest=/etc/resolv.conf mode=644 owner=root group=root    
   - name: Installation des packages
     yum: name={{ item }} state=present update_cache=yes
     with_items:
@@ -68,3 +71,14 @@
   - name: Affichage de l'heure
     debug:
       msg: "Heure: {{ result }}"
+  - name: FreeIPA Master
+    #shell: ipa-server-install --admin-password=$IPA_SERVER_PASSWORD --ds-password=$IPA_SERVER_PASSWORD  --hostname=$IPA_SERVER_NAME.$IPA_SERVER_DOMAIN --ip-address=$IPA_SERVER_IP --domain=$IPA_SERVER_DOMAIN --realm=${IPA_SERVER_DOMAIN^^} --mkhomedir --setup-dns --forwarder=145.42.2.2 --forwarder=165.162.68.19 --auto-reverse --ssh-trust-dns --unattended
+    shell: ipa-server-install --admin-password=$IPA_SERVER_PASSWORD --ds-password=$IPA_SERVER_PASSWORD  --hostname=$IPA_SERVER_NAME.$IPA_SERVER_DOMAIN --ip-address=$IPA_SERVER_IP --domain=$IPA_SERVER_DOMAIN --realm=${IPA_SERVER_DOMAIN^^} --mkhomedir --setup-dns --forwarder=8.8.8.8 --forwarder=8.8.4.4 --auto-reverse --ssh-trust-dns --unattended
+    when: "'idmmaster' in group_names"
+  - name: FreeIPA Secondary
+    shell: ipa-replica-install --principal admin --admin-password $IPA_SERVER_PASSWORD --server $IPA_SERVER_NAME.$IPA_SERVER_DOMAIN --domain=$IPA_SERVER_DOMAIN --setup-ca --unattended
+    when: "'idmsecondary' in group_names"
+  - name: FreeIPA Client
+    shell: ipa-client-install --hostname=`hostname -f` --server=$IPA_SERVER_NAME.$IPA_SERVER_DOMAIN --domain=$IPA_SERVER_DOMAIN --ntp-server=$IPA_SERVER_NTP -U -p admin -w $IPA_SERVER_PASSWORD
+    # authconfig --enablemkhomedir --update
+    when: "'idmclient' in group_names"

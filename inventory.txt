@@ -9,3 +9,9 @@ ansible_ssh_pass=vagrant
 node[1:3]
 [nodes:vars]
 ansible_connection=ssh
+[idmmaster]
+node1
+[idmsecondary]
+node2
+[idmclient]
+node3
