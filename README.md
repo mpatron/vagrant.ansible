@@ -17,3 +17,7 @@ versionlock added: 3
 
 Il faut bloquer à la version ipa-server-4.4.0-12.el7.centos.x86_64.rpm
 Prendre la version v1611.01 sur https://app.vagrantup.com/centos/boxes/7/versions/1611.01
+
+
+Pour lancer le test, il faut taper dans le répertoire:
+vagrant up --provision
