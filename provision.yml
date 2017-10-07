@@ -10,7 +10,7 @@
 
     IPA_SERVER_PASSWORD: Welcome1
     IPA_SERVER_NAME: node1
-    IPA_SERVER_DOMAIN: jobjects.org
+    IPA_SERVER_DOMAIN: jobjects.net
     IPA_SERVER_IP: 192.168.56.141
     # IPA_SERVER_NTP: ntp1.net-courrier.extra.laposte.fr
     IPA_SERVER_NTP: 0.fr.pool.ntp.org
@@ -65,15 +65,16 @@
   - name: Extinction et déactivation de chronyd pour laisser la place à ntpd
     service: name=chronyd state=stopped enabled=false      
   - name: Mise à jour du l'heure
-    # shell: ntpdate -su $IPA_SERVER_NTP
-    shell: echo $IPA_SERVER_NTP
+    shell: ntpdate -su $IPA_SERVER_NTP
+    # shell: echo $IPA_SERVER_NTP
     register: result
   - name: Affichage de l'heure
     debug:
       msg: "Heure: {{ result }}"
   - name: FreeIPA Master
     #shell: ipa-server-install --admin-password=$IPA_SERVER_PASSWORD --ds-password=$IPA_SERVER_PASSWORD  --hostname=$IPA_SERVER_NAME.$IPA_SERVER_DOMAIN --ip-address=$IPA_SERVER_IP --domain=$IPA_SERVER_DOMAIN --realm=${IPA_SERVER_DOMAIN^^} --mkhomedir --setup-dns --forwarder=145.42.2.2 --forwarder=165.162.68.19 --auto-reverse --ssh-trust-dns --unattended
-    shell: ipa-server-install --admin-password=$IPA_SERVER_PASSWORD --ds-password=$IPA_SERVER_PASSWORD  --hostname=$IPA_SERVER_NAME.$IPA_SERVER_DOMAIN --ip-address=$IPA_SERVER_IP --domain=$IPA_SERVER_DOMAIN --realm=${IPA_SERVER_DOMAIN^^} --mkhomedir --setup-dns --forwarder=8.8.8.8 --forwarder=8.8.4.4 --auto-reverse --ssh-trust-dns --unattended
+    #shell: ipa-server-install --admin-password=$IPA_SERVER_PASSWORD --ds-password=$IPA_SERVER_PASSWORD  --hostname=$IPA_SERVER_NAME.$IPA_SERVER_DOMAIN --ip-address=$IPA_SERVER_IP --domain=$IPA_SERVER_DOMAIN --realm=${IPA_SERVER_DOMAIN^^} --mkhomedir --setup-dns --forwarder=8.8.8.8 --forwarder=8.8.4.4 --auto-reverse --ssh-trust-dns --unattended
+    shell: /vagrant/install-freeipa.sh
     when: "'idmmaster' in group_names"
   - name: FreeIPA Secondary
     shell: ipa-replica-install --principal admin --admin-password $IPA_SERVER_PASSWORD --server $IPA_SERVER_NAME.$IPA_SERVER_DOMAIN --domain=$IPA_SERVER_DOMAIN --setup-ca --unattended

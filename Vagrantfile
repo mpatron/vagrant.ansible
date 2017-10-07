@@ -29,7 +29,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.box = "centos/7"
-  config.vm.box_version = "1611.01"
+  # config.vm.box_version = "1611.01"
   config.vm.boot_timeout = 60
   config.vm.provider "virtualbox" do |vb|
     vb.cpus = 2    
@@ -39,7 +39,7 @@ Vagrant.configure("2") do |config|
 
   (1..3).each do |i|
     config.vm.define "node#{i}" do |node|
-      node.vm.hostname = "node#{i}.jobjects.org"
+      node.vm.hostname = "node#{i}.jobjects.net"
       node.vm.network "private_network", ip: "192.168.56.14#{i}"
       node.vm.provision "shell", inline: <<-SHELL1
         sudo sed -i -e "\\#PasswordAuthentication no# s#PasswordAuthentication no#PasswordAuthentication yes#g" /etc/ssh/sshd_config
@@ -49,7 +49,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define 'controller' do |machine|
-    machine.vm.hostname = "controller.jobjects.org"
+    machine.vm.hostname = "controller.jobjects.net"
     machine.vm.network "private_network", ip: "192.168.56.140"
     machine.vm.provision "shell", inline: <<-SHELL3
       sudo sed -i -e "\\#PasswordAuthentication no# s#PasswordAuthentication no#PasswordAuthentication yes#g" /etc/ssh/sshd_config
