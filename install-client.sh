@@ -9,4 +9,5 @@ set -x
 ntpdate -su $IPA_SERVER_NTP
 
 ipa-client-install --hostname=`hostname -f` --server=$IPA_SERVER_NAME.$IPA_SERVER_DOMAIN --domain=$IPA_SERVER_DOMAIN --ntp-server=$IPA_SERVER_NTP -U -p admin -w $IPA_SERVER_PASSWORD
+printf $IPA_SERVER_PASSWORD | kinit admin
 authconfig --enablemkhomedir --update

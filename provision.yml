@@ -66,20 +66,16 @@
     service: name=chronyd state=stopped enabled=false      
   - name: Mise à jour du l'heure
     shell: ntpdate -su $IPA_SERVER_NTP
-    # shell: echo $IPA_SERVER_NTP
     register: result
   - name: Affichage de l'heure
     debug:
       msg: "Heure: {{ result }}"
   - name: FreeIPA Master
-    #shell: ipa-server-install --admin-password=$IPA_SERVER_PASSWORD --ds-password=$IPA_SERVER_PASSWORD  --hostname=$IPA_SERVER_NAME.$IPA_SERVER_DOMAIN --ip-address=$IPA_SERVER_IP --domain=$IPA_SERVER_DOMAIN --realm=${IPA_SERVER_DOMAIN^^} --mkhomedir --setup-dns --forwarder=145.42.2.2 --forwarder=165.162.68.19 --auto-reverse --ssh-trust-dns --unattended
-    #shell: ipa-server-install --admin-password=$IPA_SERVER_PASSWORD --ds-password=$IPA_SERVER_PASSWORD  --hostname=$IPA_SERVER_NAME.$IPA_SERVER_DOMAIN --ip-address=$IPA_SERVER_IP --domain=$IPA_SERVER_DOMAIN --realm=${IPA_SERVER_DOMAIN^^} --mkhomedir --setup-dns --forwarder=8.8.8.8 --forwarder=8.8.4.4 --auto-reverse --ssh-trust-dns --unattended
     shell: /vagrant/install-freeipa.sh
     when: "'idmmaster' in group_names"
   - name: FreeIPA Secondary
-    shell: ipa-replica-install --principal admin --admin-password $IPA_SERVER_PASSWORD --server $IPA_SERVER_NAME.$IPA_SERVER_DOMAIN --domain=$IPA_SERVER_DOMAIN --setup-ca --unattended
+    shell: /vagrant/install-replica.sh
     when: "'idmsecondary' in group_names"
   - name: FreeIPA Client
-    shell: ipa-client-install --hostname=`hostname -f` --server=$IPA_SERVER_NAME.$IPA_SERVER_DOMAIN --domain=$IPA_SERVER_DOMAIN --ntp-server=$IPA_SERVER_NTP -U -p admin -w $IPA_SERVER_PASSWORD
-    # authconfig --enablemkhomedir --update
+    shell: /vagrant/install-client.sh
     when: "'idmclient' in group_names"
