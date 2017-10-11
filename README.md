@@ -24,3 +24,5 @@ Prendre la version v1611.01 sur https://app.vagrantup.com/centos/boxes/7/version
 
 Pour lancer le test, il faut taper dans le répertoire:
 vagrant up --provision
+
+vagrant plugin install vagrant-vmware-workstation

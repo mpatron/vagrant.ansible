@@ -31,7 +31,7 @@ Vagrant.configure("2") do |config|
   config.vm.box = "centos/7"
   # config.vm.box_version = "1611.01"
   config.vm.boot_timeout = 60
-  config.vm.provider "virtualbox" do |vb|
+  config.vm.provider "vmware-workstation" do |vb|
     vb.cpus = 2    
     vb.memory = "2048"
     vb.customize ['modifyvm', :id, '--cableconnected1', 'on']
