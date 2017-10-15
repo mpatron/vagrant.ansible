@@ -1,11 +1,5 @@
 # Vagrant & Ansible
 
-https://github.com/tumf/vagrant-ansible_local-centos7-sample
-
-https://www.vagrantup.com/docs/provisioning/ansible_local.html
-
-https://github.com/ansible/ansible/issues/14141
-
 Bloque la version à http://mirror.centos.org/centos/7.3.1611/os/x86_64/Packages/ 
 donc --releasever=7.3.1611
 faire 
@@ -24,3 +18,8 @@ Prendre la version v1611.01 sur https://app.vagrantup.com/centos/boxes/7/version
 
 Pour lancer le test, il faut taper dans le répertoire:
 vagrant up --provision
+
+Sources:
+https://github.com/tumf/vagrant-ansible_local-centos7-sample
+https://www.vagrantup.com/docs/provisioning/ansible_local.html
+https://github.com/ansible/ansible/issues/14141
