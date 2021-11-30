@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# set http_proxy=http://xrsl210:d2S%25p8G%40@222.192.20.150:8080
+# set http_proxy=http://proxy.jobjects.org:8080
 # set https_proxy=%http_proxy%
 # vagrant box add centos/7
 
@@ -9,8 +9,8 @@ ENV["LC_ALL"] = "fr_FR.UTF-8"
 
 Vagrant.configure("2") do |config|
   
-  # config.proxy.http     = "http://xrsl210:d2S%25p8G%40@222.192.20.150:8080"
-  # config.proxy.https    = "http://xrsl210:d2S%25p8G%40@222.192.20.150:8080"
+  # config.proxy.http     = "http://proxy.jobjects.org:8080"
+  # config.proxy.https    = "http://proxy.jobjects.org:8080"
   # config.proxy.no_proxy = "localhost,127.0.0.1"
   puts "proxyconf..."
   if Vagrant.has_plugin?("vagrant-proxyconf")
