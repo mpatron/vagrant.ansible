@@ -16,17 +16,20 @@
 
   tasks:
  
-  - name: Doit être CentOS7
-    fail: msg="===>> Only on CentOS 7, derivatives, and later ! <<==="
-    when: (ansible_distribution != "CentOS" and ansible_distribution != 'Red Hat Enterprise Linux') or (ansible_distribution_major_version != "7")
-#  - name: Yum update standard repo
-#    yum: name=* state=latest update_cache=yes
+  - name: Doit être Debian
+    fail: msg="===>> Only on Debian, derivatives, and later ! <<==="
+    when: (ansible_distribution != "Debian")
+  - name: Update apt repo and cache on all Debian/Ubuntu boxes
+    apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+  - name: Upgrade all packages on servers
+    apt: upgrade=dist force_apt_get=yes
+
   - name: Ecriture du fichier /etc/hosts
     template: src=/vagrant/hosts.j2 dest=/etc/hosts mode=644 owner=root group=root
   - name: Ecriture du fichier /etc/resolv.conf
     template: src=/vagrant/resolv.conf.j2 dest=/etc/resolv.conf mode=644 owner=root group=root    
   - name: Installation des packages
-    yum: name={{ item }} state=present update_cache=yes
+    apt: name={{ item }} state=present update_cache=yes
     with_items:
       - rng-tools
       - ipa-server
