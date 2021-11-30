@@ -9,7 +9,8 @@ set -x
 ntpdate -su $IPA_SERVER_NTP
 
 ipa-server-install --admin-password=$IPA_SERVER_PASSWORD --ds-password=$IPA_SERVER_PASSWORD  --hostname=$IPA_SERVER_NAME.$IPA_SERVER_DOMAIN --ip-address=$IPA_SERVER_IP --domain=$IPA_SERVER_DOMAIN --realm=${IPA_SERVER_DOMAIN^^} --mkhomedir --setup-dns --forwarder=8.8.8.8 --forwarder=8.8.4.4 --auto-reverse --ssh-trust-dns --unattended
-# ipa-server-install --admin-password=$IPA_SERVER_PASSWORD --ds-password=$IPA_SERVER_PASSWORD  --hostname=$IPA_SERVER_NAME.$IPA_SERVER_DOMAIN --ip-address=$IPA_SERVER_IP --domain=$IPA_SERVER_DOMAIN --realm=${IPA_SERVER_DOMAIN^^} --mkhomedir --setup-dns --forwarder=145.42.2.2 --forwarder=165.162.68.19 --auto-reverse --ssh-trust-dns --unattended
+firewall-cmd --add-service={freeipa-ldap,freeipa-ldaps,dns,ntp} --permanent
+firewall-cmd --reload
 
 # Connection Admin
 printf $IPA_SERVER_PASSWORD | kinit admin
