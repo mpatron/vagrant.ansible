@@ -3,7 +3,7 @@
 
 # set http_proxy=http://proxy.jobjects.org:8080
 # set https_proxy=%http_proxy%
-# vagrant box add centos/7
+# vagrant box add generic/ubuntu2004
 
 ENV["LC_ALL"] = "fr_FR.UTF-8"
 
@@ -28,8 +28,7 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  config.vm.box = "centos/7"
-  # config.vm.box_version = "1611.01"
+  config.vm.box = "generic/ubuntu2004"
   config.vm.boot_timeout = 60
   config.vm.provider "virtualbox" do |vb|
     vb.cpus = 2    
@@ -64,12 +63,6 @@ Vagrant.configure("2") do |config|
       ansible.inventory_path = "inventory.txt"
     end
 
-#    machine.vm.provision "shell", inline: <<-SHELL4
-#      sshpass -p "vagrant" ssh -o StrictHostKeyChecking=no vagrant@192.168.56.141 'sudo -H -u root bash -c /vagrant/install-freeipa.sh'
-#      sshpass -p "vagrant" ssh -o StrictHostKeyChecking=no vagrant@192.168.56.142 'sudo -H -u root bash -c /vagrant/install-replica.sh'
-#      sshpass -p "vagrant" ssh -o StrictHostKeyChecking=no vagrant@192.168.56.143 'sudo -H -u root bash -c /vagrant/install-client.sh'
-#    SHELL4
-    
   end
   
  end
