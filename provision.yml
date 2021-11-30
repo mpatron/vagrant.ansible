@@ -12,7 +12,6 @@
     IPA_SERVER_NAME: node1
     IPA_SERVER_DOMAIN: jobjects.net
     IPA_SERVER_IP: 192.168.56.141
-    # IPA_SERVER_NTP: ntp1.net-courrier.extra.laposte.fr
     IPA_SERVER_NTP: 0.fr.pool.ntp.org
 
   tasks:
