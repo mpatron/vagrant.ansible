@@ -28,8 +28,9 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  config.vm.box = "generic/ubuntu2004"
-  config.vm.boot_timeout = 60
+  config.vm.box = "myubuntu2004"
+  config.vm.boot_timeout = 600 # 300 secondes est la valeur pas defaut
+  config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
   config.vm.provider "virtualbox" do |vb|
     vb.cpus = 2    
     vb.memory = "2048"

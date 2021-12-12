@@ -31,11 +31,6 @@
   - name: Installation des packages
     apt: name={{ item }} state=present update_cache=yes
     with_items:
-      - rng-tools
-      - ipa-server
-      - ipa-server-dns
-      - bind
-      - bind-dyndb-ldap
       - vim
       - lsof
       - lynx
